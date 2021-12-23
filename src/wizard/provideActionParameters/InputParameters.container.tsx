@@ -10,7 +10,7 @@ function InputParametersContainer({
 }: InputParametersContainerProps) {
   const inputParams = wizardData?.actionInterface?.spec.input.parameters ?? [];
 
-  const submitFn = async (name: string, data: any) => {
+  const submitFunc = async (name: string, data: any) => {
     const actionInputParameters = {
       ...wizardData.actionInputParameters,
       [name]: data,
@@ -20,7 +20,7 @@ function InputParametersContainer({
 
   return (
     <InputParameters
-      setInputParameter={submitFn}
+      setInputParameter={submitFunc}
       initInputParametersData={wizardData?.actionInputParameters}
       isLoading={false}
       inputParamsSchemas={inputParams}

@@ -12,6 +12,7 @@ import Menu from "./layout/Menu";
 import NotFoundPage from "./layout/NotFound";
 import { RequireAuthContainer } from "./auth/RequireAuth.container";
 import Header from "./layout/Header";
+import NewExecutorDetails from "./routes/executor-details";
 
 function App() {
   return (
@@ -21,8 +22,8 @@ function App() {
         <Layout>
           <Menu />
           <Routes>
-            <Route path="/" element={<Navigate to="/hub/interface-groups" />} />
-            <Route path="/hub/interface-groups">
+            <Route path="/" element={<Navigate to="/hub/executors" />} />
+            <Route path="/hub/executors">
               <Route index element={<NewInterfaceGroupCatalog />} />
               <Route path=":name" element={<NewInterfacesCatalog />} />
             </Route>
@@ -31,6 +32,8 @@ function App() {
               <Route path="new/:path/:revision" element={<NewAction />} />
               <Route path=":name" element={<Action />} />
             </Route>
+            <Route path="executors/:name" element={<NewExecutorDetails />} />
+
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Layout>

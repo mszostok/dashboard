@@ -6,14 +6,14 @@ import {
 } from "../generated/graphql";
 
 function InterfaceGroupsContainer() {
-  const { data, error, isLoading } = useListInterfaceGroupsQuery();
+  // const { data, error, isLoading } = useListInterfaceGroupsQuery();
 
-  const groups = (data?.interfaceGroups as InterfaceGroupGQL[]) ?? [];
+  const groups: InterfaceGroupGQL[] = [];
   return (
     <InterfaceGroup
       interfaceGroups={groups}
-      error={error as Error}
-      isLoading={isLoading}
+      // error={error as Error}
+      isLoading={false}
     />
   );
 }

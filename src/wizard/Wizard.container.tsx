@@ -48,18 +48,18 @@ function WizardContainer({
     {} as WizardData
   );
 
-  const { data, error, isLoading } = useListInterfaceRevisionQuery({
-    path: interfacePath,
-    revision: interfaceRevision,
-  });
+  // const { data, error, isLoading } = useListInterfaceRevisionQuery({
+  //   path: interfacePath,
+  //   revision: interfaceRevision,
+  // });
 
-  const actionInterface = data?.interface?.revision as InterfaceRevision;
-  if (actionInterface && actionInterface !== wizardData.actionInterface) {
-    setWizardData({
-      ...wizardData,
-      actionInterface,
-    } as WizardData);
-  }
+  // const actionInterface = "0.0.1" as InterfaceRevision;
+  // if (actionInterface && actionInterface !== wizardData.actionInterface) {
+  //   setWizardData({
+  //     ...wizardData,
+  //     actionInterface,
+  //   } as WizardData);
+  // }
 
   const nextStep = () => {
     setCurrentStep(currentStepIdx + 1);
@@ -76,8 +76,8 @@ function WizardContainer({
 
   return (
     <Wizard
-      isLoading={isLoading}
-      error={error as Error}
+      isLoading={false}
+      // error={error as Error}
       steps={steps}
       currentStepIndex={currentStepIdx}
       canProceed={canProceed}
@@ -92,35 +92,31 @@ function collectRequiredSteps(stepProps: StepComponentProps) {
   const steps: WizardSteps = [];
   const actionInput = stepProps.wizardData?.actionInterface?.spec.input;
 
-  if (actionInput?.parameters.length) {
-    steps.push({
-      title: "Input parameters",
-      content: <InputParametersContainer {...stepProps} />,
-      canProceed: (data) => {
-        const { requiredLen, submittedLen } = requiredAddSubmittedParams(
-          stepProps.wizardData ?? {}
-        );
-        return requiredLen === 0 || submittedLen === requiredLen;
-      },
-      replaceNextBtn: (data) => {
-        return actionInput.parameters.length === 1;
-      },
-    });
-  }
+  // if (actionInput?.parameters.length) {
+  steps.push({
+    title: "Input parameters",
+    content: <InputParametersContainer {...stepProps} />,
+    canProceed: (data) => {
+      const { requiredLen, submittedLen } = requiredAddSubmittedParams(
+        stepProps.wizardData ?? {}
+      );
+      return requiredLen === 0 || submittedLen === requiredLen;
+      // return true;
+    },
+    replaceNextBtn: (data) => {
+      return false;
+    },
+  });
+  // }
 
-  if (actionInput?.typeInstances.length) {
-    steps.push({
-      title: "Input TypeInstances",
-      content: <InputTypeInstancesContainer {...stepProps} />,
-      canProceed: (data) => {
-        const { requiredLen, selectedLen } = requiredAddSelectedTI(
-          stepProps.wizardData
-        );
-        return requiredLen === 0 || selectedLen === requiredLen;
-      },
-      replaceNextBtn: () => false,
-    });
-  }
+  steps.push({
+    title: "Binding",
+    content: <InputTypeInstancesContainer {...stepProps} />,
+    canProceed: (data) => {
+      return true;
+    },
+    replaceNextBtn: () => false,
+  });
 
   steps.push({
     title: "Summary",

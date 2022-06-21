@@ -103,20 +103,8 @@ function ActionSummary({
     <Content className="action-summary">
       <Descriptions column={1} bordered>
         <Descriptions.Item label="Name">{actionNameField()}</Descriptions.Item>
-        <Descriptions.Item label="Interface">
-          <Text code>
-            {data.input.actionRef.path}:{data.input.actionRef.revision}
-          </Text>
-        </Descriptions.Item>
-        <Descriptions.Item label="Implementation">
-          {data.actionImplPath ? (
-            <Text code>{data.actionImplPath}</Text>
-          ) : (
-            <Text>
-              Select by Engine, during render process. Can be preselected in
-              advanced settings tab.
-            </Text>
-          )}
+        <Descriptions.Item label="ClusterTemplate">
+          <Text code>Kubectl</Text>
         </Descriptions.Item>
       </Descriptions>
       <Tabs defaultActiveKey="1" style={{ marginTop: "24px" }}>
@@ -131,20 +119,6 @@ function ActionSummary({
               <InputParameters
                 dataSource={inputParamsSource(data.input.input?.parameters)}
               />
-            </Descriptions.Item>
-            <Descriptions.Item label="Input TypeInstances">
-              <TypeInstancesListContainer data={inputTypeInstanceData} />
-            </Descriptions.Item>
-            <Descriptions.Item label="Action Policy">
-              {data.input.input?.actionPolicy ? (
-                <Paragraph>
-                  <pre className="scrollable">
-                    {JSON.stringify(data.input.input.actionPolicy, null, 4)}
-                  </pre>
-                </Paragraph>
-              ) : (
-                <Text>No Action Policy</Text>
-              )}
             </Descriptions.Item>
           </Descriptions>
         </TabPane>

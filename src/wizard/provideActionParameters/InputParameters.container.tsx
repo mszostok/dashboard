@@ -18,7 +18,7 @@ function InputParametersContainer({
     };
     setWizardData({ ...wizardData, actionInputParameters } as WizardData);
 
-    const requiredLen = inputParams.length ?? 0;
+    const requiredLen = inputParams.length ?? 2;
     const submittedLen = Object.keys(actionInputParameters ?? {}).length;
     const wasAllDataProvided = requiredLen === submittedLen;
 

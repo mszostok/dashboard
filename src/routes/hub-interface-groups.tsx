@@ -9,12 +9,12 @@ function NewInterfaceGroupCatalog() {
     <Breadcrumb>
       <Breadcrumb.Item>Hub</Breadcrumb.Item>
       <Breadcrumb.Item>
-        <Link to="/hub/interface-groups">InterfaceGroups</Link>
+        <Link to="/hub/executors">Executors</Link>
       </Breadcrumb.Item>
     </Breadcrumb>
   );
   return (
-    <Page breadcrumb={breadcrumb} title="Public Hub">
+    <Page breadcrumb={breadcrumb} title="Executors">
       <InterfaceGroupsContainer />
     </Page>
   );

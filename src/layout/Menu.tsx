@@ -13,12 +13,12 @@ function Menu() {
   const links = [
     {
       name: "Hub",
-      route: "/hub/interface-groups",
+      route: "/hub/executors",
       icon: <ApartmentOutlined />,
     },
     {
-      name: "Actions",
-      route: "/actions",
+      name: "Executors",
+      route: "/executors",
       icon: <AppstoreOutlined />,
     },
   ];

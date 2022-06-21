@@ -4,3 +4,21 @@
 .list-item:hover {
   background: rgba(0, 0, 0, 0.02);
 }
+
+.content-bg-rounded2 {
+  background-color: #fff;
+  border: none;
+}
+.test {
+}
+.test .ant-card-body {
+  padding: 0;
+}
+
+.test .ant-card-extra {
+  /*font-size: 17px;*/
+}
+
+.site-card-wrapper {
+  border-radius: 6px;
+}

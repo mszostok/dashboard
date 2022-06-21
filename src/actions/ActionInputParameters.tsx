@@ -25,15 +25,9 @@ function InputParameters({ dataSource }: InputParametersProps) {
         return (
           <List.Item key={item.name}>
             <List.Item.Meta
-              title={
-                <>
-                  <Text strong>Name: </Text>
-                  <Text code>{item.name}</Text>
-                </>
-              }
+              title={<></>}
               description={
                 <>
-                  <Text strong>Value:</Text>
                   <Paragraph>
                     <pre className="scrollable">
                       {JSON.stringify(item.value, null, 4)}

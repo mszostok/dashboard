@@ -25,37 +25,37 @@ interface InterfacesContainerProps {
 }
 
 function InterfacesContainer({ path, view }: InterfacesContainerProps) {
-  const { data, error, isLoading } = useListInterfacesFromInterfaceGroupQuery({
-    path: path,
-  });
+  // const { data, error, isLoading } = useListInterfacesFromInterfaceGroupQuery({
+  //   path: path,
+  // });
+  //
+  // if (!isLoading && (!data || !data.interfaceGroup)) {
+  //   return (
+  //     <Result
+  //       status="404"
+  //       title="404"
+  //       subTitle={
+  //         <>
+  //           Sorry, <b>{path}</b> InterfaceGroup was not found in Hub.
+  //         </>
+  //       }
+  //     />
+  //   );
+  // }
 
-  if (!isLoading && (!data || !data.interfaceGroup)) {
-    return (
-      <Result
-        status="404"
-        title="404"
-        subTitle={
-          <>
-            Sorry, <b>{path}</b> InterfaceGroup was not found in Hub.
-          </>
-        }
-      />
-    );
-  }
-
-  const ifaces = data?.interfaceGroup?.interfaces.map(
-    ({ latestRevision: rev }) => {
-      return {
-        ...rev,
-        key: new ResourceReference(rev?.metadata.path, rev?.revision).key(),
-      } as InterfaceRevisionWithKey;
-    }
-  );
+  // const ifaces = data?.interfaceGroup?.interfaces.map(
+  //   ({ latestRevision: rev }) => {
+  //     return {
+  //       ...rev,
+  //       key: new ResourceReference(rev?.metadata.path, rev?.revision).key(),
+  //     } as InterfaceRevisionWithKey;
+  //   }
+  // );
 
   const props = {
-    interfaces: ifaces,
-    error: error as Error,
-    isLoading: isLoading,
+    path: path,
+    // error: error as Error,
+    isLoading: false,
   };
 
   switch (view) {

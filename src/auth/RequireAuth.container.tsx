@@ -19,38 +19,27 @@ interface RequireAuthContainerProps {
 
 export function RequireAuthContainer({ children }: RequireAuthContainerProps) {
   const [authenticated, setAuthenticated] = React.useState(false);
-  const queryClient = useQueryClient();
 
   if (!authenticated && requestConfigLoader.existsAndValid()) {
     setAuthenticated(true);
   }
 
-  const query = useTestConnectionQuery(
-    {},
-    {
-      enabled: false,
-      retry: false,
-      keepPreviousData: false,
-    }
-  );
-
   const logout = () => {
     requestConfigLoader.reset();
-    queryClient.clear();
     setAuthenticated(false);
   };
 
   const onLoginFormSubmit = (values: LoginDetails) => {
     requestConfigLoader.save(values);
-    query.refetch();
   };
 
-  if (!authenticated && !query.isError && query.data !== undefined) {
+  if (!authenticated) {
     try {
       requestConfigLoader.setValid();
       setAuthenticated(true);
     } catch (err) {
-      return <ErrorAlert error={err as Error | undefined} />;
+      setAuthenticated(true);
+      // return <ErrorAlert error={err as Error | undefined} />;
     }
   }
 
@@ -58,8 +47,7 @@ export function RequireAuthContainer({ children }: RequireAuthContainerProps) {
     const defaultLoginDetails = loadDefaultLoginDetails();
     return (
       <LoginForm
-        loading={query.isLoading}
-        error={query.error as Error | undefined}
+        loading={false}
         onLoginFormSubmit={onLoginFormSubmit}
         defaultLoginDetails={defaultLoginDetails}
       />

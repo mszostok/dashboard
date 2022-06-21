@@ -153,9 +153,9 @@ export enum ActionStatusPhase {
   BeingRendered = "BEING_RENDERED",
   Canceled = "CANCELED",
   Failed = "FAILED",
-  Initial = "INITIAL",
+  Initial = "INITIALIZATION",
   ReadyToRun = "READY_TO_RUN",
-  Running = "RUNNING",
+  Running = "SERVING",
   Succeeded = "SUCCEEDED",
 }
 

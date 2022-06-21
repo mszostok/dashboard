@@ -1,143 +1,185 @@
-import { Card, Col, Descriptions, Input, List, Row, Tag, Tooltip } from "antd";
+import { Card, Col, Row, Table, Typography } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 import "./InterfacesList.css";
-import React, { useState } from "react";
-import CenteredSpinner from "../layout/CenteredSpinner";
-import ErrorAlert from "../layout/ErrorAlert";
-import { SearchOutlined } from "@ant-design/icons";
-import {
-  interfaceActionsButtons,
-  InterfaceRevisionWithKey,
-} from "./Interfaces.container";
-import { TypeReference } from "../generated/graphql";
+import React from "react";
+import { PlusCircleOutlined } from "@ant-design/icons";
+import { ActionStatusPhase } from "../generated/graphql";
+import { Link } from "react-router-dom";
+import ActionStatus from "../actions/ActionStatus";
+import { executorGroups } from "./data";
 
-const { Item } = List;
+const { Meta } = Card;
+const { Text } = Typography;
 
 interface InterfacesListProps {
-  interfaces?: InterfaceRevisionWithKey[];
+  path?: string;
   error?: Error;
   isLoading: boolean;
 }
 
-function InterfacesList({ interfaces, error, isLoading }: InterfacesListProps) {
-  const [namePrefix, setNamePrefix] = useState("");
+interface dataItem {
+  name: string;
+  namespace: string;
+  createdAt: Date;
+  status: string;
+}
 
-  if (isLoading) {
-    return <CenteredSpinner />;
-  }
+function InterfacesList({ path, isLoading }: InterfacesListProps) {
+  const data: dataItem[] = [
+    {
+      name: "read-only",
+      namespace: "default, kube-system, istio-system, botkube",
+      createdAt: new Date(),
+      status: "SERVING",
+    },
+    {
+      name: "admin-access",
+      namespace: "@all",
+      createdAt: new Date(),
+      status: "INITIALIZATION",
+    },
+    {
+      name: "full-team-a-access",
+      namespace: "team-a",
+      createdAt: new Date(),
+      status: "FAILED",
+    },
+  ];
+  const extraContent = (
+    <Link to={`/actions/new/cap.interface.database.redis.install/0.1.0`}>
+      <PlusCircleOutlined /> Configure
+    </Link>
+  );
 
-  if (error) {
-    return <ErrorAlert error={error} />;
-  }
-
-  const ifaces = interfaces?.filter(({ key }) => {
-    return !(namePrefix && !key.includes(namePrefix));
+  const gridStyle: React.CSSProperties = {
+    width: "100%",
+    height: "100%",
+    textAlign: "center",
+    background: "none",
+  };
+  const executor = executorGroups.find((val) => {
+    return val.name === path;
   });
 
-  const extraContent = (
-    <Input
-      placeholder="name"
-      allowClear
-      suffix={<SearchOutlined style={{ color: "rgba(0,0,0,.45)" }} />}
-      onChange={(e) => {
-        if (namePrefix === e.target.value) {
-          return;
-        }
-        setNamePrefix(e.target.value);
-      }}
-    />
-  );
-
   return (
-    <Card
-      title="Interfaces"
-      headStyle={{ borderBottom: "none" }}
-      bordered={false}
-      extra={extraContent}
-    >
-      <List
-        itemLayout="horizontal"
-        dataSource={ifaces}
-        style={{ background: "#fff" }}
-        renderItem={(rev) => {
-          const inputParams = toCodeItemList(rev?.spec.input.parameters);
-          const inputTIss = toCodeItemList(rev?.spec.input.typeInstances);
-          const output = toCodeItemList(rev?.spec.output.typeInstances);
-
-          return (
-            <Item className="list-item" actions={interfaceActionsButtons(rev)}>
-              <Row>
-                <Col span={10}>
-                  <Item.Meta
-                    title={rev?.metadata.displayName}
-                    description={rev.key}
-                  />
-                </Col>
-                <Col span={14}>
-                  <Descriptions
-                    labelStyle={{ fontWeight: 500 }}
-                    size="small"
-                    column={2}
-                  >
-                    <Descriptions.Item label="Input Parameters">
-                      <div>{inputParams?.length ? inputParams : "None"}</div>
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Input TypeInstances">
-                      <div>{inputTIss?.length ? inputTIss : "None"}</div>
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Outputs">
-                      <div>{output?.length ? output : "None"}</div>
-                    </Descriptions.Item>
-                  </Descriptions>
-                </Col>
-              </Row>
-            </Item>
-          );
-        }}
-      />
-    </Card>
+    <>
+      <div className="site-card-wrapper">
+        <Row gutter={16}>
+          <Col span={4}>
+            <Card
+              style={{ height: 200, background: "none", borderRadius: "6px" }}
+              cover={
+                <img
+                  alt="example"
+                  style={{
+                    marginTop: 30,
+                    display: "block",
+                    marginLeft: 80,
+                    marginRight: "auto",
+                    width: "30%",
+                    height: "30%",
+                  }}
+                  src={executor?.iconURL}
+                />
+              }
+            >
+              <Meta title={executor?.name} style={{ marginLeft: 80 }} />
+            </Card>
+          </Col>
+          <Col span={20}>
+            <Card
+              title="General information"
+              bordered={false}
+              style={{ height: 190, borderRadius: "6px" }}
+            >
+              <Card.Grid style={gridStyle}>
+                Version, documentation url, support url, etc.
+              </Card.Grid>
+              <Card.Grid style={gridStyle}>statistics etc.</Card.Grid>
+            </Card>
+          </Col>
+        </Row>
+      </div>
+      <br />
+      <br />
+      <Card
+        title="Manage Instances"
+        bordered={false}
+        className="test"
+        style={{ borderRadius: "6px" }}
+        extra={extraContent}
+      >
+        <Table
+          className="content-bg-rounded2"
+          style={{ borderBottom: "none", borderRadius: "6px !important" }}
+          loading={isLoading}
+          dataSource={data.slice(0, executor?.items)}
+          columns={columns}
+          pagination={false}
+        />
+      </Card>
+    </>
   );
 }
 
-interface namedEntry {
-  name: string;
-  typeRef?: TypeReference | null;
-}
+const columns = [
+  {
+    title: "Name",
+    dataIndex: "name",
+    key: "name",
+    render: (name: string) => (
+      <Link to={`/executors/${name}`}>
+        <strong>{name}</strong>
+      </Link>
+    ),
+    sorter: (a: dataItem, b: dataItem) => a.name.localeCompare(b.name),
+  },
+  {
+    title: "Namespace",
+    dataIndex: "namespace",
+    key: "namespace",
+    render: (ns: string) => {
+      const out = ns.split(",").map((val) => {
+        return <Text code>{val}</Text>;
+      });
+      return out;
+    },
+    sorter: (a: dataItem, b: dataItem) =>
+      a.namespace.localeCompare(b.namespace),
+  },
+  {
+    title: "Created",
+    dataIndex: "createdAt",
+    key: "createdAt",
+    render: (date: string) => <Text>{new Date(date).toUTCString()}</Text>,
+    sorter: (a: dataItem, b: dataItem) =>
+      a.createdAt.getTime() - b.createdAt.getTime(),
+  },
+  {
+    title: "Status",
+    dataIndex: "status",
+    key: "status",
+    render: (phase: ActionStatusPhase | undefined) => (
+      <ActionStatus phase={phase} />
+    ),
+    sorter: (a: dataItem, b: dataItem) => {
+      const { status: aStatus = "" } = a;
+      const { status: bStatus = "" } = b;
 
-function toCodeItemList(arg?: Array<namedEntry | undefined | null>) {
-  return arg
-    ?.filter((v): v is namedEntry => v !== undefined && v !== null)
-    .map((v) => (
-      <AddTypeRefTooltipIfPossible key={v.name} typeRef={v.typeRef}>
-        <Tag color="blue" style={{ cursor: "default" }} key={v.name}>
-          {v.name}
-        </Tag>
-      </AddTypeRefTooltipIfPossible>
-    ));
-}
-
-interface AddTypeRefTooltipIfPossibleProps {
-  children: React.ReactNode;
-  typeRef?: TypeReference | null;
-}
-
-function AddTypeRefTooltipIfPossible({
-  children,
-  typeRef,
-}: AddTypeRefTooltipIfPossibleProps) {
-  if (!typeRef) {
-    return <>{children}</>;
-  }
-
-  return (
-    <Tooltip
-      placement="top"
-      overlayStyle={{ maxWidth: "420px" }}
-      title={`${typeRef.path}:${typeRef.revision}`}
-      arrowPointAtCenter
-    >
-      {children}
-    </Tooltip>
-  );
-}
+      return aStatus.localeCompare(bStatus);
+    },
+  },
+  {
+    title: "Action",
+    dataIndex: "name",
+    align: "center" as const,
+    key: "action",
+    render: (name: string) => (
+      <Link to={`/executors/${name}`}>
+        <DeleteOutlined />
+      </Link>
+    ),
+  },
+];
 
 export default InterfacesList;

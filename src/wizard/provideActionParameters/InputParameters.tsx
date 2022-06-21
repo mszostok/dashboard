@@ -34,6 +34,11 @@ function InputParameters({
     return <ErrorAlert error={error} />;
   }
 
+  inputParamsSchemas = [
+    {
+      name: "test",
+    },
+  ];
   const tabs: Tab[] = inputParamsSchemas.map((item) => {
     const initData =
       initInputParametersData && initInputParametersData[item.name];
@@ -80,7 +85,59 @@ function InputParameters({
           formButton={formButton}
           name={item.name}
           typeRef={item.typeRef}
-          rawJSONSchema={item.jsonSchema}
+          rawJSONSchema={`{
+						"type": "object",
+						"title": "Parameters for kubectl executor",
+						"required": [
+							"enabled",
+							"verbs",
+							"resources"
+						],
+						"properties": {
+							"enabled": {
+								"title": "Set true to enable kubectl commands execution",
+								"type": "boolean",
+								"default": true
+							},
+							"verbs": {
+								"title": "Methods which are allowed",
+								"type": "array",
+								"default": [ "api-resources", "api-versions"],
+								"items": {
+									"type": "string",
+									"enum": [
+										"api-resources",
+										"api-versions",
+										"cluster-info",
+										"describe",
+										"diff",
+										"explain",
+										"get",
+										"logs",
+										"top",
+										"auth"
+									]
+								}
+							},
+							"resources": {
+								"title": "Resource configuration which is allowed",
+								"type": "array",
+								"default": [ "deployments","pods"],
+								"items": {
+									"type": "string",
+									"enum": [
+										"deployments",
+										"pods",
+										"namespaces",
+										"daemonsets",
+										"statefulsets",
+										"storageclasses",
+										"nodes"
+									]
+								}
+							}
+						}
+					}`}
           onSuccessSubmit={onSuccessSubmit}
         />
       ),

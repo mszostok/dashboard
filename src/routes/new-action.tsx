@@ -17,16 +17,16 @@ function NewAction() {
   const breadcrumb = (
     <Breadcrumb>
       <Breadcrumb.Item>
-        <Link to="/actions">Actions</Link>
+        <Link to="/executors">Executors</Link>
       </Breadcrumb.Item>
-      <Breadcrumb.Item>New</Breadcrumb.Item>
+      <Breadcrumb.Item>Install</Breadcrumb.Item>
     </Breadcrumb>
   );
 
   return (
     <Page
       breadcrumb={breadcrumb}
-      title="Create a new Action"
+      title="Install a new Executor"
       onBack={() => window.history.back()}
     >
       <WizardContainer interfacePath={path} interfaceRevision={revision} />

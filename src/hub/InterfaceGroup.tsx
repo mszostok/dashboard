@@ -4,6 +4,7 @@ import { InterfaceGroup as InterfaceGroupGQL } from "../generated/graphql";
 import ErrorAlert from "../layout/ErrorAlert";
 import { useNavigate } from "react-router-dom";
 import "./InterfaceGroup.css";
+import { executorGroups } from "./data";
 
 const { Paragraph } = Typography;
 
@@ -31,29 +32,26 @@ function InterfaceGroup({
     return <ErrorAlert error={error} />;
   }
 
-  const cards = interfaceGroups.map(({ metadata, interfaces }) => {
-    const ifaceCnt = interfaces.length;
+  const cards = executorGroups.map(({ name, description, items, iconURL }) => {
     return (
-      <Col span={6} key={metadata.path}>
+      <Col span={6} key={name}>
         <Card
           className="content-bg-rounded"
-          hoverable={ifaceCnt > 0}
+          hoverable={items > 0}
           onClick={() => {
-            ifaceCnt && navigate(`/hub/interface-groups/${metadata.path}`);
+            items && navigate(`/hub/executors/${name}`);
           }}
           bordered={false}
         >
           <Card.Meta
-            avatar={
-              <Avatar shape="square" size="large" src={metadata.iconURL} />
-            }
-            title={metadata.displayName}
+            avatar={<Avatar shape="square" size="large" src={iconURL} />}
+            title={name}
             description={
-              <Paragraph ellipsis={{ rows: 1 }}>{metadata.path}</Paragraph>
+              <Paragraph ellipsis={{ rows: 1 }}>{description}</Paragraph>
             }
           />
           <div className="interface-group-count-wrapper">
-            <Badge className="interface-group-count" count={ifaceCnt} />
+            <Badge className="interface-group-count" count={items} />
           </div>
         </Card>
       </Col>

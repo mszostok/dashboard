@@ -19,16 +19,11 @@ function Header() {
   return (
     <AntHeader className="header">
       <Link className="header-logo" to="/">
-        <img
-          className="header-logo-image"
-          src="/logo_white.svg"
-          alt="Capact Logo"
-        />
-        <b className="header-logo-title">Capact</b>
+        <b className="header-logo-title">Foo name</b>
       </Link>
       <Menu theme="dark" mode="horizontal" className="header-menu">
         <Menu.Item key="docs" icon={<QuestionCircleOutlined />}>
-          <a href="https://capact.io/docs" target="_blank" rel="noreferrer">
+          <a href="https://example.com/docs" target="_blank" rel="noreferrer">
             Documentation
           </a>
         </Menu.Item>

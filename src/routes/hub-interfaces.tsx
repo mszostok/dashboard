@@ -22,7 +22,7 @@ function NewInterfacesCatalog() {
     <Breadcrumb>
       <Breadcrumb.Item>Hub</Breadcrumb.Item>
       <Breadcrumb.Item>
-        <Link to="/hub/interface-groups">InterfaceGroups</Link>
+        <Link to="/hub/executors">Executors</Link>
       </Breadcrumb.Item>
       <Breadcrumb.Item>{name}</Breadcrumb.Item>
     </Breadcrumb>
@@ -42,8 +42,8 @@ function NewInterfacesCatalog() {
           onClick={() => setView(InterfacesView.Card)}
         />,
       ]}
-      title="Public Hub"
-      onBack={() => navigate("/hub/interface-groups")}
+      title="Executors Hub"
+      onBack={() => navigate("/hub/executors")}
     >
       <InterfacesContainer path={name} view={view} />
     </Page>

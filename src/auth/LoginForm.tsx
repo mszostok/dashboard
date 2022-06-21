@@ -18,11 +18,7 @@ function LoginForm({
 }: LoginFormProps) {
   return (
     <div className="login-form">
-      <Card
-        title="Capact Dashboard Login"
-        bordered={false}
-        style={{ width: 500 }}
-      >
+      <Card title="Dashboard Login" bordered={false} style={{ width: 500 }}>
         {error && (
           <Alert
             message={`Error`}
@@ -40,19 +36,6 @@ function LoginForm({
           onFinish={onLoginFormSubmit}
           autoComplete="off"
         >
-          <Form.Item
-            label="Endpoint"
-            name="endpoint"
-            rules={[
-              {
-                required: true,
-                message: "Provide the Capact Gateway endpoint.",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-
           <Form.Item
             label="Username"
             name="username"

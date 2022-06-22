@@ -6,7 +6,7 @@ const { Footer: AntFooter } = Layout;
 function Footer() {
   return (
     <AntFooter style={{ textAlign: "center", userSelect: "none" }}>
-      &copy; 2021 Capact
+      &copy; 2021 Foo name
     </AntFooter>
   );
 }
